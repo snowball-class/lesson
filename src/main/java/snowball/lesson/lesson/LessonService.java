@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import snowball.lesson.repository.LessonRepository;
 
+import java.util.List;
 
 @Service
 public class LessonService {
@@ -17,5 +18,13 @@ public class LessonService {
 
     public Lesson findLesson(Long lessonId){
         return lessonRepository.findById(lessonId);
+    }
+
+    public List<Lesson> findLessonList(int categoryId){
+        return lessonRepository.getLessonList(categoryId);
+    }
+
+    public List<Lesson> findEventLessonList(int eventId){
+        return lessonRepository.getEventLessonList(eventId);
     }
 }

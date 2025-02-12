@@ -12,6 +12,11 @@ public class Lesson {
     private String intro;
     private int thumbnail;
     private LocalDateTime registerDate;
+    private int eventId;
+    private int discountRate;
+
+    private LocalDateTime discountStartDate;
+    private LocalDateTime discountFinishDate;
 
 
     public long getLessonId() {
@@ -78,6 +83,35 @@ public class Lesson {
         this.registerDate = registerDate;
     }
 
-    public void setId(long id) {
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
+
+    public int getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(int discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public LocalDateTime getDiscountStartDate() {
+        return discountStartDate;
+    }
+
+    public void setDiscountStartDate(LocalDateTime discountStartDate) {
+        this.discountStartDate = discountStartDate;
+    }
+
+    public LocalDateTime getDiscountFinishDate() {
+        return discountFinishDate;
+    }
+
+    public void setDiscountFinishDate(LocalDateTime discountFinishDate) {
+        this.discountFinishDate = discountFinishDate;
     }
 }
