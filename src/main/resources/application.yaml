@@ -12,7 +12,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true # 다솔님 설정
     properties:
       hibernate.format_sql: true
@@ -21,7 +21,6 @@ spring:
 # swagger 관련 설정
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
   paths-to-match: /**
   swagger-ui:
     path: /

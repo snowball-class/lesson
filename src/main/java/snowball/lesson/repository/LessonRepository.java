@@ -1,6 +1,7 @@
 package snowball.lesson.repository;
 
 
+import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.lesson.Lesson;
 
 import java.util.List;
@@ -12,6 +13,6 @@ public interface LessonRepository {
     List<Lesson> getLessonList(int categoryId);
 
     // 상세페이지
-    Lesson findById(long id);
+    GetLessonDetailsDto findById(long id);
 
 }

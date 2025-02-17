@@ -2,6 +2,7 @@ package snowball.lesson.lesson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.repository.LessonRepository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class LessonService {
         this.lessonRepository = lessonRepository;
     }
 
-    public Lesson findLesson(Long lessonId){
+    public GetLessonDetailsDto findLesson(Long lessonId){
         return lessonRepository.findById(lessonId);
     }
 

@@ -1,5 +1,6 @@
 package snowball.lesson.repository;
 
+import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.lesson.Lesson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,8 +34,8 @@ public class JdbcLessonRepository implements LessonRepository{
     }
 
     @Override
-    public Lesson findById(long id) {
-        Lesson result = jdbcTemplate.queryForObject("select * from lesson where lesson_id = ? and deleted = 0", lessonRowMapper(), id);
+    public GetLessonDetailsDto findById(long id) {
+        GetLessonDetailsDto result = jdbcTemplate.queryForObject("SELECT l.*, c.category_name FROM lesson AS l LEFT JOIN category AS c ON l.category_id = c.category_id where lesson_id = ? and deleted = 0", lessonDetailMapper(), id);
         return result;
     }
 
@@ -46,7 +47,8 @@ public class JdbcLessonRepository implements LessonRepository{
             lesson.setCategoryId(rs.getInt("category_id"));
             lesson.setTutor(rs.getString("tutor"));
             lesson.setPrice(rs.getInt("price"));
-            lesson.setIntro(rs.getString("intro"));
+            lesson.setContent1(rs.getString("content"));
+            lesson.setContent2(rs.getString("content2"));
             lesson.setThumbnail(rs.getInt("thumbnail_id"));
             lesson.setEventId(rs.getInt("event_id"));
             lesson.setDiscountRate(rs.getInt("discount_rate"));
@@ -58,5 +60,36 @@ public class JdbcLessonRepository implements LessonRepository{
         };
     }
 
+    private RowMapper<GetLessonDetailsDto> lessonDetailMapper() {
+        return (rs, rowNum) -> {
+            GetLessonDetailsDto lesson = new GetLessonDetailsDto();
+            lesson.setLessonId(rs.getLong("lesson_id"));
+            lesson.setTitle(rs.getString("title"));
+            lesson.setTutor(rs.getString("tutor"));
+            lesson.setCategoryId(rs.getInt("category_id"));
+            lesson.setCategoryName(rs.getString("category_name"));
+            lesson.setContent1(rs.getString("content"));
+            lesson.setContent2(rs.getString("content2"));
+            lesson.setThumbnail(rs.getInt("thumbnail_id"));
+            lesson.setEventId(rs.getInt("event_id"));
 
+            int price = rs.getInt("price");
+            int discountRate = rs.getInt("discount_rate");
+            int discountPrice = calDiscount(price, discountRate);
+            lesson.setNetPrice(price);
+            lesson.setDiscountRate(discountRate);
+            lesson.setSalePrice(discountPrice);
+
+            Timestamp sdate = rs.getTimestamp("discount_sdate");
+            Timestamp fdate = rs.getTimestamp("discount_fdate");
+            lesson.setDiscountStartDate(sdate == null ? null : sdate.toLocalDateTime());
+            lesson.setDiscountFinishDate(fdate == null ? null : fdate.toLocalDateTime());
+
+            return lesson;
+        };
+    }
+
+    public int calDiscount(int price, int discountPercent) {
+        return price * discountPercent / 100;
+    }
 }

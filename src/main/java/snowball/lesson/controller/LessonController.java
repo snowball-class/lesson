@@ -1,6 +1,13 @@
 package snowball.lesson.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import snowball.lesson.dto.ApiResponseEntity;
 import jakarta.servlet.http.HttpServletResponse;
+import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.lesson.Lesson;
 import snowball.lesson.lesson.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +32,14 @@ public class LessonController {
     *   request     : Lesson Id
     *   response    : Lesson Object
     * */
-    @GetMapping("/lesson/detail/{id}")
-    public Lesson getLessonDetails(@PathVariable()long lessonId, HttpServletResponse response){
-        return lessonService.findLesson(lessonId);
+    @GetMapping("/lesson/details/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lessons retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Lessons not found")
+    })
+    public ApiResponseEntity<GetLessonDetailsDto> getLessonDetails(@PathVariable()long lessonId){
+        GetLessonDetailsDto data = lessonService.findLesson(lessonId);
+        return ApiResponseEntity.success(data);
     }
 
     /*
