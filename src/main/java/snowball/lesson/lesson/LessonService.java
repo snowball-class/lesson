@@ -2,7 +2,10 @@ package snowball.lesson.lesson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import snowball.lesson.dto.ApiResponseEntity;
 import snowball.lesson.dto.GetLessonDetailsDto;
+import snowball.lesson.dto.GetLessonDto;
+import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
 
 import java.util.List;
@@ -21,11 +24,29 @@ public class LessonService {
         return lessonRepository.findById(lessonId);
     }
 
-    public List<Lesson> findLessonList(int categoryId){
-        return lessonRepository.getLessonList(categoryId);
+
+    public List<GetLessonDto> findLessonList(int categoryId){
+        List<GetLessonDto> result = lessonRepository.getLessonList(categoryId);
+        if(result.isEmpty()){
+            throw new LessonNotFoundException("This event has not lesson");
+        }
+        return result;
     }
 
-    public List<Lesson> findEventLessonList(int eventId){
-        return lessonRepository.getEventLessonList(eventId);
+    public List<GetLessonDto> findEventLessonList(int eventId){
+        List<GetLessonDto> result = lessonRepository.getEventLessonList(eventId);
+        if(result.isEmpty()){
+            throw new LessonNotFoundException("This event has not lesson");
+        }
+        return result;
     }
+
+    public List<GetLessonDto> searchLesson(String keyword){
+        List<GetLessonDto> result = lessonRepository.getSearchLesson(keyword);
+        if(result.isEmpty()){
+            throw new LessonNotFoundException("No results found");
+        }
+        return result;
+    }
+
 }

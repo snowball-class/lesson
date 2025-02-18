@@ -2,6 +2,7 @@ package snowball.lesson.dto;
 
 import jakarta.annotation.Nullable;
 import org.springframework.http.HttpStatus;
+import snowball.lesson.exception.ErrorDto;
 
 public record ApiResponseEntity<T>(
         HttpStatus status,
@@ -14,7 +15,7 @@ public record ApiResponseEntity<T>(
         return new ApiResponseEntity<>(HttpStatus.OK, true, data, null);
     }
 
-    public static <T> ApiResponseEntity<T> fail(String message) {
-        return new ApiResponseEntity<>(HttpStatus.BAD_REQUEST, false, null, message);
+    public static <T> ApiResponseEntity<T> fail(ErrorDto error) {
+        return new ApiResponseEntity<>(HttpStatus.NOT_FOUND, false, null, error.message());
     }
 }
