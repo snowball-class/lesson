@@ -72,6 +72,11 @@ public class LessonController {
         return ApiResponseEntity.success("success");
     }
 
+    /*
+     *   이벤트 정보 삭제 - eventId=0, discountRate=0 으로 bulk update
+     *   request     : ApplyEventToLessonRequest
+     *
+     * */
     @DeleteMapping("/event/{eventId}")
     public ApiResponseEntity deleteEventFromLesson(@PathVariable("eventId") Long eventId) {
         lessonService.deleteEvent(eventId);
