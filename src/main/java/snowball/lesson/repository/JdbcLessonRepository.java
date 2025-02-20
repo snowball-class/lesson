@@ -29,7 +29,7 @@ public class JdbcLessonRepository implements LessonRepository {
 
     // comment : 추후 리뷰테이블 추가되면 정렬 추가할 것
     @Override
-    public List<GetLessonDto> getEventLessonList(int eventId) {
+    public List<GetLessonDto> getEventLessonList(long eventId) {
         return jdbcTemplate.query(
                 "select * from lesson where event_id = ? and deleted = 0"
                 , lessonListMapper()
@@ -126,7 +126,7 @@ public class JdbcLessonRepository implements LessonRepository {
             lesson.setCategoryName(rs.getString("category_name"));
             lesson.setContent1(rs.getString("content"));
             lesson.setContent2(rs.getString("content2"));
-            lesson.setEventId(rs.getInt("event_id"));
+            lesson.setEventId(rs.getLong("event_id"));
 
             int thumbId = rs.getInt("thumbnail_id");
             lesson.setThumbnail(getThumbUrl(thumbId));  // 이미지 URL
@@ -153,7 +153,7 @@ public class JdbcLessonRepository implements LessonRepository {
             lesson.setLessonId(rs.getLong("lesson_id"));
             lesson.setTitle(rs.getString("title"));
             lesson.setCategoryId(rs.getInt("category_id"));
-            lesson.setEventId(rs.getInt("event_id"));
+            lesson.setEventId(rs.getLong("event_id"));
 
             int thumbId = rs.getInt("thumbnail_id");
             lesson.setThumbnail(getThumbUrl(thumbId));  // 이미지 URL

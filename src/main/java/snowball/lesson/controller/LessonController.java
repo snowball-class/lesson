@@ -50,7 +50,7 @@ public class LessonController {
      *   response    : GetLessonDto List
      * */
     @GetMapping("/event/{eventId}")
-    public ApiResponseEntity<List<GetLessonDto>> getEventLessonList(@PathVariable() int eventId) {
+    public ApiResponseEntity<List<GetLessonDto>> getEventLessonList(@PathVariable() Long eventId) {
         List<GetLessonDto> data = lessonService.findEventLessonList(eventId);
         return ApiResponseEntity.success(data);
     }
@@ -69,6 +69,12 @@ public class LessonController {
     @PatchMapping("/event")
     public ApiResponseEntity applyEventToLesson(@Valid @RequestBody ApplyEventToLessonRequest request) {
         lessonService.applyEvent(request);
+        return ApiResponseEntity.success("success");
+    }
+
+    @DeleteMapping("/event/{eventId}")
+    public ApiResponseEntity deleteEventFromLesson(@PathVariable("eventId") Long eventId) {
+        lessonService.deleteEvent(eventId);
         return ApiResponseEntity.success("success");
     }
 

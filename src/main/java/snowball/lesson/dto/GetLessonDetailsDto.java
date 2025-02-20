@@ -22,7 +22,7 @@ public class GetLessonDetailsDto {
     private String content1;
     private String content2;
     private String thumbnail;
-    private int eventId;
+    private long eventId;
     private int discountRate;
     private LocalDateTime discountStartDate;
     private LocalDateTime discountFinishDate;

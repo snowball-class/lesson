@@ -34,4 +34,17 @@ public record ApplyEventToLessonRequest(
         @Schema(description = "이벤트 할인 적용할 클래스 목록 (id)", example = "[1, 15, 6, 7, 2]")
         List<Long> lessonIds
 ) {
+        public static ApplyEventToLessonRequest from(Long eventId,
+                                                     Integer discountRate,
+                                                     LocalDateTime discountStartDate,
+                                                     LocalDateTime discountFinishDate,
+                                                     List<Long> lessonIds) {
+                return new ApplyEventToLessonRequest(
+                        eventId,
+                        discountRate,
+                        discountStartDate,
+                        discountFinishDate,
+                        lessonIds
+                );
+        }
 }

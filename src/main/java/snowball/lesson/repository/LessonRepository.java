@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LessonRepository {
     // 메인페이지
-    List<GetLessonDto> getEventLessonList(int eventId);
+    List<GetLessonDto> getEventLessonList(long eventId);
     List<GetLessonDto> getLessonList(int categoryId);
     List<GetLessonDto> getSearchLesson(String keyword);
 

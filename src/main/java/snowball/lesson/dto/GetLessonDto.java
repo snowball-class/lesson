@@ -16,7 +16,7 @@ public class GetLessonDto {
     private int netPrice;
     private int salePrice;
     private String thumbnail;
-    private int eventId;
+    private long eventId;
     private int discountRate;
     private LocalDateTime discountStartDate;
     private LocalDateTime discountFinishDate;

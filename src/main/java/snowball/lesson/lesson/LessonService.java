@@ -9,7 +9,9 @@ import snowball.lesson.dto.GetLessonDto;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
@@ -34,7 +36,7 @@ public class LessonService {
         return result;
     }
 
-    public List<GetLessonDto> findEventLessonList(int eventId) {
+    public List<GetLessonDto> findEventLessonList(Long eventId) {
         List<GetLessonDto> result = lessonRepository.getEventLessonList(eventId);
         if (result.isEmpty()) {
             throw new LessonNotFoundException("This event has not lesson");
@@ -56,5 +58,15 @@ public class LessonService {
                 request.discountRate(),
                 request.discountStartDate(), request.discountFinishDate(),
                 request.lessonIds());
+    }
+
+    @Transactional
+    public void deleteEvent(Long eventId) {
+        applyEvent(ApplyEventToLessonRequest.from(
+                0L, 0,
+                LocalDateTime.now(), LocalDateTime.now(),
+                findEventLessonList(eventId).stream()
+                        .map(GetLessonDto::getLessonId)
+                        .collect(Collectors.toList())));
     }
 }
