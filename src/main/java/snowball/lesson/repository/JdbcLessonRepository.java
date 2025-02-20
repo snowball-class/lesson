@@ -83,7 +83,7 @@ public class JdbcLessonRepository implements LessonRepository{
             lesson.setContent1(rs.getString("content"));
             lesson.setContent2(rs.getString("content2"));
             lesson.setThumbnail(rs.getInt("thumbnail_id"));
-            lesson.setEventId(rs.getInt("event_id"));
+            lesson.setEventId(rs.getLong("event_id"));
             lesson.setDiscountRate(rs.getInt("discount_rate"));
             Timestamp sdate = rs.getTimestamp("discount_sdate");
             Timestamp fdate = rs.getTimestamp("discount_fdate");

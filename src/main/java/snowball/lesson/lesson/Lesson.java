@@ -20,7 +20,7 @@ public class Lesson {
     private String content2;
     private int thumbnail;
     private LocalDateTime registerDate;
-    private int eventId;
+    private long eventId;
     private int discountRate;
     private LocalDateTime discountStartDate;
     private LocalDateTime discountFinishDate;
