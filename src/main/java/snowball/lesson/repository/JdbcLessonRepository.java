@@ -1,27 +1,29 @@
 package snowball.lesson.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.dto.GetLessonDto;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.lesson.Lesson;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public class JdbcLessonRepository implements LessonRepository{
+public class JdbcLessonRepository implements LessonRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcLessonRepository(DataSource dataSource){
+    public JdbcLessonRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -30,8 +32,8 @@ public class JdbcLessonRepository implements LessonRepository{
     public List<GetLessonDto> getEventLessonList(int eventId) {
         return jdbcTemplate.query(
                 "select * from lesson where event_id = ? and deleted = 0"
-                    , lessonListMapper()
-                    , eventId);
+                , lessonListMapper()
+                , eventId);
     }
 
     // comment : 추후 리뷰테이블 추가되면 정렬 추가할 것
@@ -68,6 +70,27 @@ public class JdbcLessonRepository implements LessonRepository{
         } catch (EmptyResultDataAccessException e) {
             throw new LessonNotFoundException("Lesson not found with ID: " + id);
         }
+    }
+
+    // bulk update query
+    @Override
+    public void bulkUpdateLessonsForEvent(long eventId,
+                                          Integer discountRate,
+                                          LocalDateTime discountStartDate, LocalDateTime discountFinishDate,
+                                          List<Long> lessonIds) {
+        String sql = "UPDATE lesson SET event_id = :eventId, discount_rate = :discountRate, " +
+                "discount_sdate = :discountStartDate, discount_fdate = :discountFinishDate " +
+                "WHERE lesson_id IN (:lessonIds)";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("eventId", eventId);
+        parameters.addValue("discountRate", discountRate);
+        parameters.addValue("discountStartDate", Timestamp.valueOf(discountStartDate));
+        parameters.addValue("discountFinishDate", Timestamp.valueOf(discountFinishDate));
+        parameters.addValue("lessonIds", lessonIds);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParameterJdbcTemplate.update(sql, parameters);
     }
 
 
@@ -155,7 +178,8 @@ public class JdbcLessonRepository implements LessonRepository{
     public int calDiscount(int price, int discountPercent) {
         return price * discountPercent / 100;
     }
-    public String getThumbUrl(int thumbId){
+
+    public String getThumbUrl(int thumbId) {
         return "";
     }
 }
