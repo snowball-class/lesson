@@ -60,15 +60,14 @@ public class JdbcLessonRepository implements LessonRepository{
 
     @Override
     public GetLessonDetailsDto findById(long id) {
-            var T = jdbcTemplate.queryForObject(
+        try {
+            return jdbcTemplate.queryForObject(
                     "SELECT l.*, c.category_name FROM lesson AS l LEFT JOIN category AS c ON l.category_id = c.category_id where lesson_id = ? and deleted = 0"
                     , lessonDetailMapper()
                     , id);
-        //return Optional.ofNullable(T).map(GetLessonDetailsDto).orElseThrow(LessonNotFoundException("Lesson not found with ID: " + id));
-        return Optional.ofNullable(T)
-                .map(item -> new GetLessonDetailsDto()) // 'item'을 사용하여 GetLessonDetailsDto 생성
-                .orElseThrow(() -> new LessonNotFoundException("Lesson not found with ID: " + id)); // 람다식으로 예외 생성
-
+        } catch (EmptyResultDataAccessException e) {
+            throw new LessonNotFoundException("Lesson not found with ID: " + id);
+        }
     }
 
 
