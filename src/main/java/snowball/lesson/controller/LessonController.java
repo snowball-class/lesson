@@ -3,18 +3,18 @@ package snowball.lesson.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import snowball.lesson.dto.ApiResponseEntity;
-import snowball.lesson.dto.ApplyEventToLessonRequest;
-import snowball.lesson.dto.GetLessonDetailsDto;
-import snowball.lesson.dto.GetLessonDto;
+import snowball.lesson.dto.*;
 import snowball.lesson.lesson.LessonService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/Lesson")
 public class LessonController {
-
+    /* 스웨거 로컬 테스트 URL
+    * http://localhost:8082/swagger-ui/index.html
+    * */
     private final LessonService lessonService;
 
     @Autowired
@@ -60,6 +60,13 @@ public class LessonController {
         List<GetLessonDto> data = lessonService.searchLesson(keyword);
         return ApiResponseEntity.success(data);
     }
+
+    @GetMapping("/member/{memberId}")
+    public ApiResponseEntity<List<GetMemberLessonDto>> getMemberLessonList(@PathVariable UUID memberId) {
+        List<GetMemberLessonDto> data = lessonService.findMemberLessonList(memberId);
+        return ApiResponseEntity.success(data);
+    }
+
 
     /*
      *   이벤트 정보 갱신 - lesson id를 받아 이벤트 정보 bulk update
