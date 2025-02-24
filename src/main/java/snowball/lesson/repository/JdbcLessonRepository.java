@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.dto.GetLessonDto;
+import snowball.lesson.dto.GetMemberLessonDto;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.lesson.Lesson;
 
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class JdbcLessonRepository implements LessonRepository {
@@ -70,6 +72,12 @@ public class JdbcLessonRepository implements LessonRepository {
         } catch (EmptyResultDataAccessException e) {
             throw new LessonNotFoundException("Lesson not found with ID: " + id);
         }
+    }
+
+    @Override
+    public List<GetMemberLessonDto> getMemberLessonList(UUID memberId){
+        String sql = "SELECT * FROM lesson_student A JOIN lesson B ON A.lesson_id = B.lesson_id WHERE A.student_id = UUID_TO_BIN('" + memberId.toString() + "');";
+        return jdbcTemplate.query(sql, memberLessonListMapper());
     }
 
     // bulk update query
@@ -175,11 +183,33 @@ public class JdbcLessonRepository implements LessonRepository {
     }
 
 
+
+    private RowMapper<GetMemberLessonDto> memberLessonListMapper() {
+        return (rs, rowNum) -> {
+            GetMemberLessonDto lesson = new GetMemberLessonDto();
+            lesson.setLessonId(rs.getLong("lesson_id"));
+            lesson.setTitle(rs.getString("title"));
+            lesson.setTitle(rs.getString("tutor"));
+            lesson.setCategoryId(rs.getInt("category_id"));
+            lesson.setIsEnrolled(rs.getInt("is_enrolled"));
+
+            int thumbId = rs.getInt("thumbnail_id");
+            lesson.setThumbnail(getThumbUrl(thumbId));  // 이미지 URL
+
+            Timestamp sdate = rs.getTimestamp("start_date");
+            lesson.setStartDate(sdate == null ? null : sdate.toLocalDateTime());
+
+            return lesson;
+        };
+    }
+
     public int calDiscount(int price, int discountPercent) {
         return price * discountPercent / 100;
     }
-
-    public String getThumbUrl(int thumbId) {
+    public String getThumbUrl(int thumbId){
         return "";
     }
+    public float calRating(){
+        return 3.5F;
+    };
 }

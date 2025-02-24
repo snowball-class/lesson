@@ -6,11 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import snowball.lesson.dto.ApplyEventToLessonRequest;
 import snowball.lesson.dto.GetLessonDetailsDto;
 import snowball.lesson.dto.GetLessonDto;
+import snowball.lesson.dto.GetMemberLessonDto;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +49,13 @@ public class LessonService {
     public List<GetLessonDto> searchLesson(String keyword) {
         List<GetLessonDto> result = lessonRepository.getSearchLesson(keyword);
         if (result.isEmpty()) {
+            throw new LessonNotFoundException("No results found");
+        }
+        return result;
+    }
+    public List<GetMemberLessonDto> findMemberLessonList(UUID memberId){
+        List<GetMemberLessonDto> result = lessonRepository.getMemberLessonList(memberId);
+        if(result.isEmpty()){
             throw new LessonNotFoundException("No results found");
         }
         return result;
