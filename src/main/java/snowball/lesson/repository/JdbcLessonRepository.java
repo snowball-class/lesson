@@ -54,8 +54,6 @@ public class JdbcLessonRepository implements LessonRepository {
                     + "where deleted = 0 "
                     + "and (title like '%"+keyword+"%'"
                     + "or tutor like '%"+keyword+"%'"
-                    + "or content like '%"+keyword+"%'"
-                    + "or content2 like '%"+keyword+"%'"
                     + "or (select category_name from category c WHERE l.category_id = c.category_id) LIKE '%"+keyword+"%'"
                     + ")";
 
