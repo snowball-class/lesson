@@ -6,16 +6,15 @@ import snowball.lesson.exception.ErrorDto;
 
 public record ApiResponseEntity<T>(
         HttpStatus status,
-        boolean success,
         @Nullable T data,
        String message
 ) {
 
     public static <T> ApiResponseEntity<T> success(@Nullable final T data) {
-        return new ApiResponseEntity<>(HttpStatus.OK, true, data, null);
+        return new ApiResponseEntity<>(HttpStatus.OK, data, null);
     }
 
     public static <T> ApiResponseEntity<T> fail(ErrorDto error) {
-        return new ApiResponseEntity<>(HttpStatus.NOT_FOUND, false, null, error.message());
+        return new ApiResponseEntity<>(HttpStatus.NOT_FOUND, null, error.message());
     }
 }
