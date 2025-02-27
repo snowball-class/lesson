@@ -1,5 +1,6 @@
 package snowball.lesson.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,9 @@ public class LessonController {
      *   response    : GetLessonDetailsDto
      * */
     @GetMapping("/details/{id}")
-    public ApiResponseEntity<GetLessonDetailsDto> getLessonDetails(@PathVariable long id) {
+    public ApiResponse<GetLessonDetailsDto> getLessonDetails(@PathVariable long id) {
         GetLessonDetailsDto data = lessonService.findLesson(id);
-        return ApiResponseEntity.success(data);
+        return ApiResponse.success(data);
     }
 
     /*
@@ -39,9 +40,9 @@ public class LessonController {
      *   response    : GetLessonDto List
      * */
     @GetMapping("/category/{categoryId}")
-    public ApiResponseEntity<List<GetLessonDto>> getLessonList(@PathVariable int categoryId) {
+    public ApiResponse<List<GetLessonDto>> getLessonList(@PathVariable int categoryId) {
         List<GetLessonDto> data = lessonService.findLessonList(categoryId);
-        return ApiResponseEntity.success(data);
+        return ApiResponse.success(data);
     }
 
     /*
@@ -50,21 +51,21 @@ public class LessonController {
      *   response    : GetLessonDto List
      * */
     @GetMapping("/event/{eventId}")
-    public ApiResponseEntity<List<GetLessonDto>> getEventLessonList(@PathVariable() Long eventId) {
+    public ApiResponse<List<GetLessonDto>> getEventLessonList(@PathVariable() Long eventId) {
         List<GetLessonDto> data = lessonService.findEventLessonList(eventId);
-        return ApiResponseEntity.success(data);
+        return ApiResponse.success(data);
     }
 
     @GetMapping("/search/{keyword}")
-    public ApiResponseEntity<List<GetLessonDto>> getSearchLesson(@PathVariable String keyword) {
+    public ApiResponse<List<GetLessonDto>> getSearchLesson(@PathVariable String keyword) {
         List<GetLessonDto> data = lessonService.searchLesson(keyword);
-        return ApiResponseEntity.success(data);
+        return ApiResponse.success(data);
     }
 
     @GetMapping("/member/{memberId}")
-    public ApiResponseEntity<List<GetMemberLessonDto>> getMemberLessonList(@PathVariable UUID memberId) {
+    public ApiResponse<List<GetMemberLessonDto>> getMemberLessonList(@PathVariable UUID memberId) {
         List<GetMemberLessonDto> data = lessonService.findMemberLessonList(memberId);
-        return ApiResponseEntity.success(data);
+        return ApiResponse.success(data);
     }
 
 
@@ -73,10 +74,11 @@ public class LessonController {
      *   request     : ApplyEventToLessonRequest
      *
      * */
-    @PatchMapping("/event")
-    public ApiResponseEntity applyEventToLesson(@Valid @RequestBody ApplyEventToLessonRequest request) {
+    @Operation(hidden = true)
+    @PutMapping("/event")
+    public ApiResponse applyEventToLesson(@Valid @RequestBody ApplyEventToLessonRequest request) {
         lessonService.applyEvent(request);
-        return ApiResponseEntity.success("success");
+        return ApiResponse.success("success");
     }
 
     /*
@@ -84,10 +86,11 @@ public class LessonController {
      *   request     : ApplyEventToLessonRequest
      *
      * */
+    @Operation(hidden = true)
     @DeleteMapping("/event/{eventId}")
-    public ApiResponseEntity deleteEventFromLesson(@PathVariable("eventId") Long eventId) {
+    public ApiResponse deleteEventFromLesson(@PathVariable("eventId") Long eventId) {
         lessonService.deleteEvent(eventId);
-        return ApiResponseEntity.success("success");
+        return ApiResponse.success("success");
     }
 
 }
