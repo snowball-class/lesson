@@ -1,7 +1,10 @@
 package snowball.lesson.dto.lesson;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import snowball.lesson.entity.lesson.Lesson;
+
+import java.time.LocalDateTime;
 
 @Schema
 public record LessonDetailsResponse(
@@ -22,7 +25,13 @@ public record LessonDetailsResponse(
         @Schema(description = "강의 내용 2", example = "프론트와 백엔드, 데이터베이스로 구성되는 모듈들을도커로 컨테이너화하여 서비스를 구축하고 돌려보기로 해요! \uD83D\uDE00")
         String content2,
         @Schema(description = "썸네일 이미지 url")
-        String thumbnailUrl
+        String thumbnailUrl,
+        @Schema(description = "썸네일 이미지 url")
+        String videoUrl,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+        @Schema(description = "강의 생성일", example = "2025-02-18T12:30:16")
+        LocalDateTime createdAt
+
             /*
             float starRating;
             int netPrice;
@@ -39,7 +48,9 @@ public record LessonDetailsResponse(
                 lesson.getPrice(),
                 lesson.getContent1(),
                 lesson.getContent2(),
-                lesson.getThumbnailUrl()
+                lesson.getThumbnailUrl(),
+                lesson.getVideoUrl(),
+                lesson.getCreatedAt()
         );
     }
 }
