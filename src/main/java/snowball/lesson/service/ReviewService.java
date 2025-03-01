@@ -1,4 +1,4 @@
-package snowball.lesson.review;
+package snowball.lesson.service;
 
 import org.springframework.stereotype.Service;
 

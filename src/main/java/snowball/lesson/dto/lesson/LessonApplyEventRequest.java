@@ -1,4 +1,4 @@
-package snowball.lesson.dto;
+package snowball.lesson.dto.lesson;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ApplyEventToLessonRequest(
+public record LessonApplyEventRequest(
         @Schema(description = "이벤트 고유키", example = "1")
         Long eventId,
         @NotNull(message = "할인율을 입력해 주세요.")
@@ -34,12 +34,12 @@ public record ApplyEventToLessonRequest(
         @Schema(description = "이벤트 할인 적용할 클래스 목록 (id)", example = "[1, 15, 6, 7, 2]")
         List<Long> lessonIds
 ) {
-        public static ApplyEventToLessonRequest from(Long eventId,
-                                                     Integer discountRate,
-                                                     LocalDateTime discountStartDate,
-                                                     LocalDateTime discountFinishDate,
-                                                     List<Long> lessonIds) {
-                return new ApplyEventToLessonRequest(
+        public static LessonApplyEventRequest from(Long eventId,
+                                                   Integer discountRate,
+                                                   LocalDateTime discountStartDate,
+                                                   LocalDateTime discountFinishDate,
+                                                   List<Long> lessonIds) {
+                return new LessonApplyEventRequest(
                         eventId,
                         discountRate,
                         discountStartDate,

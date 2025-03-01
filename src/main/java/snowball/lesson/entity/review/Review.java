@@ -1,4 +1,4 @@
-package snowball.lesson.review;
+package snowball.lesson.entity.review;
 
 import lombok.Getter;
 import lombok.Setter;

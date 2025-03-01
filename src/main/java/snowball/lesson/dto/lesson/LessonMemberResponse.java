@@ -1,4 +1,4 @@
-package snowball.lesson.dto;
+package snowball.lesson.dto.lesson;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetMemberLessonDto {
+public class LessonMemberResponse {
+    // 삭제 예정 - view 서비스로 이동
     private long lessonId;
     private String title;
     private String tutor;
