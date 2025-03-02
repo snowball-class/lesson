@@ -1,5 +1,6 @@
 package snowball.lesson.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import snowball.lesson.service.S3ImageService;
 public class ImageController {
     private final S3ImageService s3ImageService;
 
+    @Operation(summary = "이미지 업로드")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ApiResponse<String> uploadImage(@RequestPart MultipartFile file) {
         String imgPath = s3ImageService.upload(file);
@@ -24,6 +26,7 @@ public class ImageController {
         return ApiResponse.success(imgPath);
     }
 
+    @Operation(summary = "url로 이미지 삭제")
     @DeleteMapping
     public ApiResponse<String> deleteImage(@RequestParam String url) {
         s3ImageService.deleteByUrl(url);
