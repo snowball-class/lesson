@@ -9,7 +9,7 @@ import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import snowball.lesson.exception.ErrorCode;
 import snowball.lesson.exception.S3Exception;
@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@Service
 public class S3ImageService {
 
     private final AmazonS3 amazonS3;

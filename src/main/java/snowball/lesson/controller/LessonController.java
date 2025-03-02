@@ -17,7 +17,7 @@ public class LessonController {
     private final LessonService lessonService;
 
     @Operation(summary = "강의 ID로 강의 조회")
-    @GetMapping("/{lessonId}/details")
+    @GetMapping("/{lessonId}")
     public ApiResponse<LessonResponse> getLessonResponse(@PathVariable("lessonId") Long lessonId) {
         return ApiResponse.success(lessonService.getLesson(lessonId));
     }
