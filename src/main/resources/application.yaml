@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: lesson # 다솔님 설정
+    name: lesson
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://3.34.177.168:3306/mysql8?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -13,7 +13,7 @@ spring:
     database: mysql
     hibernate:
       ddl-auto: none
-    show-sql: true # 다솔님 설정
+    show-sql: true
     properties:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
