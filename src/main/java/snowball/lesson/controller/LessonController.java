@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import snowball.lesson.dto.ApiResponse;
+import snowball.lesson.dto.lesson.LessonCreateRequest;
 import snowball.lesson.dto.lesson.LessonResponse;
+import snowball.lesson.dto.lesson.LessonUpdateRequest;
 import snowball.lesson.service.LessonService;
 
 @Tag(name = "강의 API")
@@ -15,6 +17,12 @@ import snowball.lesson.service.LessonService;
 @RequestMapping("/lessons")
 public class LessonController {
     private final LessonService lessonService;
+
+    @Operation(summary = "강의 생성")
+    @PostMapping
+    public ApiResponse<Long> createLesson(LessonCreateRequest request) {
+        return ApiResponse.success(lessonService.createLesson(request));
+    }
 
     @Operation(summary = "강의 ID로 강의 조회")
     @GetMapping("/{lessonId}")
@@ -42,4 +50,9 @@ public class LessonController {
         return ApiResponse.success(data);
     }
 
+    @Operation(summary = "강의 수정")
+    @PutMapping("/{lessonId}")
+    public ApiResponse<LessonResponse> updateLesson(@PathVariable("lessonId") Long lessonId, LessonUpdateRequest request) {
+        return ApiResponse.success(lessonService.updateLesson(lessonId, request));
+    }
 }
