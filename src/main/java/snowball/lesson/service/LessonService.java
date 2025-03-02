@@ -15,6 +15,9 @@ import snowball.lesson.exception.ErrorCode;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class LessonService {
@@ -43,6 +46,14 @@ public class LessonService {
     @Transactional(readOnly = true)
     public LessonResponse getLesson(Long lessonId) {
         return LessonResponse.from(getLessonById(lessonId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<LessonResponse> getBulkLessons(List<Long> lessonIds) {
+        List<Lesson> lessons = lessonRepository.findAllByLessonIdIn(lessonIds);
+        return lessons.stream()
+                .map(LessonResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

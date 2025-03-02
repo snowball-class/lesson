@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import snowball.lesson.entity.lesson.Lesson;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     @Override
     @Query("SELECT l FROM Lesson l JOIN FETCH l.category WHERE l.lessonId = :id")
     Optional<Lesson> findById(@Param("id") Long id);
+
+    @Query("SELECT l FROM Lesson l JOIN FETCH l.category WHERE l.lessonId IN :ids")
+    List<Lesson> findAllByLessonIdIn(@Param("ids") List<Long> ids);
 
     @Query("SELECT l FROM Lesson l JOIN FETCH l.category WHERE l.tutor LIKE %:keyword% OR l.title LIKE %:keyword%")
     Page<Lesson> findByTutorOrTitleContaining(@Param("keyword") String keyword, Pageable pageable);
