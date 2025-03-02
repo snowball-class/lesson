@@ -1,13 +1,17 @@
 package snowball.lesson.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import snowball.lesson.dto.lesson.LessonDetailsResponse;
+import snowball.lesson.dto.lesson.LessonResponse;
 import snowball.lesson.entity.lesson.Lesson;
 import snowball.lesson.exception.ErrorCode;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,57 +26,20 @@ public class LessonService {
     }
 
     @Transactional(readOnly = true)
-    public LessonDetailsResponse getLessonDetails(Long lessonId) {
-        return LessonDetailsResponse.from(getLessonById(lessonId));
+    public LessonResponse getLesson(Long lessonId) {
+        return LessonResponse.from(getLessonById(lessonId));
     }
 
+    @Transactional(readOnly = true)
+    public Page<LessonResponse> getLessonListByCategory(Long categoryId, int page, int size) {
+        return lessonRepository.findAllByCategoryId(categoryId, PageRequest.of(page, size))
+                .map(LessonResponse::from);
+    }
 
-//    public List<LessonResponse> findLessonList(int categoryId) {
-//        List<LessonResponse> result = lessonRepository.getLessonList(categoryId);
-//        if (result.isEmpty()) {
-//            throw new LessonNotFoundException(ErrorCode.LESSON_NOT_FOUND);
-//        }
-//        return result;
-//    }
-//
-//    public List<LessonResponse> findEventLessonList(Long eventId) {
-//        List<LessonResponse> result = lessonRepository.getEventLessonList(eventId);
-//        if (result.isEmpty()) {
-//            throw new LessonNotFoundException(ErrorCode.LESSON_NOT_FOUND);
-//        }
-//        return result;
-//    }
-//
-//    public List<LessonResponse> searchLesson(String keyword) {
-//        List<LessonResponse> result = lessonRepository.getSearchLesson(keyword);
-//        if (result.isEmpty()) {
-//            throw new LessonNotFoundException(ErrorCode.LESSON_NOT_FOUND);
-//        }
-//        return result;
-//    }
-//    public List<GetMemberLessonDto> findMemberLessonList(UUID memberId){
-//        List<GetMemberLessonDto> result = lessonRepository.getMemberLessonList(memberId);
-//        if(result.isEmpty()){
-//            throw new LessonNotFoundException(ErrorCode.LESSON_NOT_FOUND);
-//        }
-//        return result;
-//    }
+    @Transactional(readOnly = true)
+    public Page<LessonResponse> getLessonListByKeyword(String keyword, int page, int size) {
+        return lessonRepository.findByTutorOrTitleContaining(keyword, PageRequest.of(page, size))
+                .map(LessonResponse::from);
+    }
 
-//    @Transactional
-//    public void applyEvent(LessonApplyEventRequest request) {
-//        lessonRepository.bulkUpdateLessonsForEvent(request.eventId(),
-//                request.discountRate(),
-//                request.discountStartDate(), request.discountFinishDate(),
-//                request.lessonIds());
-//    }
-//
-//    @Transactional
-//    public void deleteEvent(Long eventId) {
-//        applyEvent(LessonApplyEventRequest.from(
-//                0L, 0,
-//                LocalDateTime.now(), LocalDateTime.now(),
-//                findEventLessonList(eventId).stream()
-//                        .map(LessonResponse::getLessonId)
-//                        .collect(Collectors.toList())));
-//    }
 }
