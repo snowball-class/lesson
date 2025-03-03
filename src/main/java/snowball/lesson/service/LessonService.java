@@ -69,9 +69,9 @@ public class LessonService {
     }
 
     @Transactional
-    public LessonResponse updateLesson(Long lessonId, LessonUpdateRequest request) {
+    public Long updateLesson(Long lessonId, LessonUpdateRequest request) {
         Category category = categoryService.getCategoryById(request.categoryId());
         Lesson lesson = getLessonById(lessonId);
-        return LessonResponse.from(lesson.update(request, category));
+        return lesson.update(request, category);
     }
 }

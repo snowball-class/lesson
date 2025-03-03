@@ -73,7 +73,7 @@ public class LessonController {
 
     @Operation(summary = "강의 수정")
     @PutMapping("/{lessonId}")
-    public ApiResponse<LessonResponse> updateLesson(@PathVariable("lessonId") Long lessonId, LessonUpdateRequest request) {
+    public ApiResponse<Long> updateLesson(@PathVariable("lessonId") Long lessonId, LessonUpdateRequest request) {
         return ApiResponse.success(lessonService.updateLesson(lessonId, request));
     }
 }

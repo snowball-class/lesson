@@ -64,14 +64,14 @@ public class Lesson {
                 .build();
     }
 
-    public Lesson update(LessonUpdateRequest request, Category category) {
+    public Long update(LessonUpdateRequest request, Category category) {
         this.title = request.title();
         this.category = category;
         this.content1 = request.content1();
         this.content2 = request.content2();
         this.thumbnailUrl = request.thumbnailUrl();
         this.videoUrl = request.videoUrl();
-        return this;
+        return getLessonId();
     }
 
 }
