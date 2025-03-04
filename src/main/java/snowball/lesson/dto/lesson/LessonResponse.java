@@ -6,7 +6,6 @@ import snowball.lesson.entity.lesson.Lesson;
 
 import java.time.LocalDateTime;
 
-@Schema
 public record LessonResponse(
         @Schema(description = "강의 고유키", example = "13")
         Long lessonId,

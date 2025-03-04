@@ -17,7 +17,7 @@ public record LessonCreateRequest(
         Long categoryId,
         @NotNull(message = "강의 가격을 입력해 주세요.")
         @Min(value = 0, message = "가격은 0원 이상이어야 합니다.")
-        @Max(value = 100000000, message = "가격은 1억원을 넘길 수 없습니다.")
+        @Max(value = 10000000, message = "가격은 천만원을 넘길 수 없습니다.")
         @Schema(description = "강의 가격", example = "59900")
         Integer price,
         @NotBlank(message = "강의 내용1을 입력해 주세요.")
