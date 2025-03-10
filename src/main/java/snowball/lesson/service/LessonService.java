@@ -50,7 +50,7 @@ public class LessonService {
 
     @Transactional(readOnly = true)
     public List<LessonResponse> getBulkLessons(List<Long> lessonIds) {
-        List<Lesson> lessons = lessonRepository.findAllByLessonIdIn(lessonIds);
+        List<Lesson> lessons = lessonRepository.findByLessonIdIn(lessonIds);
         return lessons.stream()
                 .map(LessonResponse::from)
                 .collect(Collectors.toList());

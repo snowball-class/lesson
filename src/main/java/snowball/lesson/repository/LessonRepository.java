@@ -17,7 +17,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     Optional<Lesson> findById(@Param("id") Long id);
 
     @Query("SELECT l FROM Lesson l JOIN FETCH l.category WHERE l.lessonId IN :ids")
-    List<Lesson> findAllByLessonIdIn(@Param("ids") List<Long> ids);
+    List<Lesson> findByLessonIdIn(@Param("ids") List<Long> ids);
 
     @Query("SELECT l FROM Lesson l JOIN FETCH l.category WHERE l.tutor LIKE %:keyword% OR l.title LIKE %:keyword%")
     Page<Lesson> findByTutorOrTitleContaining(@Param("keyword") String keyword, Pageable pageable);
