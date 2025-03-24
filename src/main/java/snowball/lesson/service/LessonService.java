@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import snowball.lesson.dto.lesson.LessonCreateRequest;
@@ -14,6 +16,7 @@ import snowball.lesson.entity.lesson.Lesson;
 import snowball.lesson.exception.ErrorCode;
 import snowball.lesson.exception.LessonNotFoundException;
 import snowball.lesson.repository.LessonRepository;
+import snowball.lesson.type.LessonSortType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,14 +60,16 @@ public class LessonService {
     }
 
     @Transactional(readOnly = true)
-    public Page<LessonResponse> getLessonListByCategory(Long categoryId, int page, int size) {
-        return lessonRepository.findAllByCategoryId(categoryId, PageRequest.of(page, size))
+    public Page<LessonResponse> getLessonListByCategory(Long categoryId, int page, int size, String type) {
+        Pageable pageable = PageRequest.of(page, size, getLessonSort(type));
+        return lessonRepository.findAllByCategoryId(categoryId, pageable)
                 .map(LessonResponse::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<LessonResponse> getLessonListByKeyword(String keyword, int page, int size) {
-        return lessonRepository.findByTutorOrTitleContaining(keyword, PageRequest.of(page, size))
+    public Page<LessonResponse> getLessonListByKeyword(String keyword, int page, int size, String type) {
+        Pageable pageable = PageRequest.of(page, size, getLessonSort(type));
+        return lessonRepository.findByTutorOrTitleContaining(keyword, pageable)
                 .map(LessonResponse::from);
     }
 
@@ -73,5 +78,18 @@ public class LessonService {
         Category category = categoryService.getCategoryById(request.categoryId());
         Lesson lesson = getLessonById(lessonId);
         return lesson.update(request, category);
+    }
+
+    public Sort getLessonSort(String type) {
+        LessonSortType sortType = LessonSortType.of(type);
+        Sort sort;
+        if (sortType == LessonSortType.PRICE_ASC) {
+            sort = Sort.by("price").ascending();
+        } else if (sortType == LessonSortType.PRICE_DESC) {
+            sort = Sort.by("price").descending();
+        } else {
+            throw new IllegalArgumentException("아직 구현되지 않은 정렬 기준입니다.");
+        }
+        return sort;
     }
 }

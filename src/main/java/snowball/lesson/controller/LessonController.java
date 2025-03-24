@@ -52,22 +52,26 @@ public class LessonController {
     }
 
     @Operation(summary = "카테고리 ID로 강의 조회")
+    @Parameter(name = "type", description = "Type 종류: PRICE_ASC, PRICE_DESC, STUDENT_DESC, RATING_DESC", required = true)
     @GetMapping("/category/{categoryId}")
     public ApiResponse<Page<LessonResponse>> getLessonListByCategory(
             @PathVariable Long categoryId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<LessonResponse> data = lessonService.getLessonListByCategory(categoryId, page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "PRICE_ASC") String type) {
+        Page<LessonResponse> data = lessonService.getLessonListByCategory(categoryId, page, size, type);
         return ApiResponse.success(data);
     }
 
     @Operation(summary = "강의 타이틀과 강사 이름에 포함된 키워드로 강의 조회")
+    @Parameter(name = "type", description = "Type 종류: PRICE_ASC, PRICE_DESC, STUDENT_DESC, RATING_DESC", required = true)
     @GetMapping("/search/{keyword}")
     public ApiResponse<Page<LessonResponse>> getLessonListByKeyword(
             @PathVariable String keyword,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<LessonResponse> data = lessonService.getLessonListByKeyword(keyword, page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "PRICE_ASC") String type) {
+        Page<LessonResponse> data = lessonService.getLessonListByKeyword(keyword, page, size, type);
         return ApiResponse.success(data);
     }
 
