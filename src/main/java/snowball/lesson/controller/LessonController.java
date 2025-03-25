@@ -3,6 +3,7 @@ package snowball.lesson.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class LessonController {
 
     @Operation(summary = "강의 생성")
     @PostMapping
-    public ApiResponse<Long> createLesson(LessonCreateRequest request) {
+    public ApiResponse<Long> createLesson(@Valid @RequestBody LessonCreateRequest request) {
         return ApiResponse.success(lessonService.createLesson(request));
     }
 
@@ -77,7 +78,7 @@ public class LessonController {
 
     @Operation(summary = "강의 수정")
     @PutMapping("/{lessonId}")
-    public ApiResponse<Long> updateLesson(@PathVariable("lessonId") Long lessonId, LessonUpdateRequest request) {
+    public ApiResponse<Long> updateLesson(@PathVariable("lessonId") Long lessonId, @Valid LessonUpdateRequest request) {
         return ApiResponse.success(lessonService.updateLesson(lessonId, request));
     }
 }
