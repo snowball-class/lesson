@@ -27,7 +27,7 @@ public enum ErrorCode {
     EMPTY_FILE_EXCEPTION(400, "올바르지 않은 이미지 파일입니다."),
     NO_FILE_EXTENTION(400, "올바르지 않은 파일 형식입니다."),
     INVALID_FILE_EXTENTION(400, "올바르지 않은 이미지 파일 형식입니다."),
-    IO_EXCEPTION_ON_IMAGE_UPLOAD(500, "Internal server error"),
+    IO_EXCEPTION_ON_IMAGE_UPLOAD(500, "이미지 파일 업로드 실패"),
     PUT_OBJECT_EXCEPTION(503, "이미지 파일 업로드 실패"),
     IO_EXCEPTION_ON_IMAGE_DELETE(503, "이미지 파일 삭제 실패"),
 
